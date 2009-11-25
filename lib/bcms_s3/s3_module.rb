@@ -27,13 +27,15 @@ module Cms
             unless ext.blank?
 
               #Check access to file
-              @attachment    = Attachment.find_live_by_file_path(@path)
+              @attachment    = ::Attachment.find_live_by_file_path(@path)
               if @attachment
                 raise Cms::Errors::AccessDenied unless current_user.able_to_view?(@attachment)
 
                 if Cms::S3::Module.enabled
                   #get the file off S3
-                  redirect_to("http://#{Cms::S3::Module.options[:s3_bucket]}.s3.amazonaws.com/#{@attachment.file_location}")
+		Rails.logger.info("http://#{Cms::S3::Module.options[:bucket]}.s3.amazonaws.com")
+		Rails.logger.info @attachment.file_location
+                  redirect_to("http://#{Cms::S3::Module.options[:bucket]}.s3.amazonaws.com/#{@attachment.file_location}")
 
                 else
                   #Construct a path to where this file would be if it were cached
@@ -69,7 +71,7 @@ module Cms
                 else 
                   suffix = "" 
                 end 
-                new_filename = "#{prefix}-#{ActiveSupport::SecureRandom.hex(8)}#{suffix}" 
+                new_filename = "#{prefix}-#{ActiveSupport::SecureRandom.hex(4)}#{suffix}" 
                 self.file_location = "#{Time.now.strftime("%Y/%m/%d")}/#{new_filename}" 
               end 
           end
@@ -79,10 +81,8 @@ module Cms
               if temp_file.local_path
 
                 if Cms::S3::Module.enabled
-                  s3_config = parse_s3_options("#{RAILS_ROOT}/config/s3.yml")
-                  debugger
-                  s3 = RightAws::S3.new(s3_config[:access_key_id], s3_config[:secret_access_key] )
-                  bucket = s3.bucket(s3_config[:bucket], true, 'public-read')
+                  s3 = RightAws::S3.new(Cms::S3::Module.options[:access_key_id], Cms::S3::Module.options[:secret_access_key] )
+                  bucket = s3.bucket(Cms::S3::Module.options[:bucket], true, 'public-read')
                   key = RightAws::S3::Key.create(bucket, file_location)
                   key.put(temp_file.read,'public-read', {"Content-Type" => file_type})
                 else
@@ -97,32 +97,19 @@ module Cms
               end
             end
           end
-          def parse_s3_options options
-            s3_config = find_s3_options(options).stringify_keys
-            (s3_config[RAILS_ENV] || s3_config).symbolize_keys
-          end
-          def find_s3_options options
-            case options
-              when File
-                YAML.load_file(options.path)
-              when String
-                YAML.load_file(options)
-              when Hash
-                options
-              else
-                raise ArgumentError, "Options are not a path, file, or hash."
-              end
-          end
-
-          private :find_s3_options
         end
       end
     end
   end
 end
+
 Cms::ContentController.send(:include, Cms::S3::Module::ContentController)
 Attachment.send(:include, Cms::S3::Module::Attachment)
 # ensure S3 storage disabled by default
 Cms::S3::Module.enabled = false if Cms::S3::Module.enabled.nil?
 # ensure heroku caching disabled by default
 Cms::S3::Module.heroku_caching = false if Cms::S3::Module.heroku_caching.nil?
+if File.exists?("#{RAILS_ROOT}/config/s3.yml")
+  Cms::S3::Module.options =  YAML.load_file("#{RAILS_ROOT}/config/s3.yml")
+  Cms::S3::Module.options.symbolize_keys!
+end
