@@ -9,17 +9,17 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Anthony Underwood"]
-  s.date = %q{2009-11-24}
+  s.date = %q{2009-11-25}
   s.email = %q{email2ants@gmail.com}
   s.extra_rdoc_files = [
     "LICENSE.txt",
-     "README"
+     "README.markdown"
   ]
   s.files = [
-    "app/controllers/cms/content_controller.rb",
-     "app/models/attachment.rb",
-     "lib/bcms_s3.rb",
-     "lib/bcms_s3/routes.rb"
+    "lib/bcms_s3.rb",
+     "lib/bcms_s3/routes.rb",
+     "lib/bcms_s3/s3_module.rb",
+     "templates/blank.rb"
   ]
   s.homepage = %q{http://github.com/aunderwo/bcms_s3}
   s.rdoc_options = ["--charset=UTF-8"]

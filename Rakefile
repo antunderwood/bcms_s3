@@ -17,10 +17,9 @@ begin
     gem.homepage = "http://github.com/aunderwo/bcms_s3"
     gem.authors = ["Anthony Underwood"]
 
-    gem.files = "app/controllers/cms/content_controller.rb"
-    gem.files << "app/models/attachment.rb"
-    gem.files << "lib/bcms_s3.rb"
+    gem.files = "lib/bcms_s3.rb"
     gem.files << "lib/bcms_s3/routes.rb"
+    gem.files << "lib/bcms_s3/s3_module.rb"
     gem.files << "templates/blank.rb"
 
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
