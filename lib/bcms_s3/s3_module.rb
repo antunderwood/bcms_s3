@@ -4,6 +4,7 @@ module Cms
     class << self
       attr_accessor :enabled
       attr_accessor :heroku_caching
+      attr_accessor :www_domain_prefix
       attr_accessor :options
     end
     module ContentController
@@ -87,15 +88,31 @@ module Cms
         end
       end
     end
+    module ApplicationController
+      def self.included(controller_class)
+        controller_class.alias_method_chain :url_without_cms_domain_prefix, :www
+      end
+      def url_without_cms_domain_prefix_with_www
+        if Cms::S3.www_domain_prefix
+          request.url.sub(/#{cms_domain_prefix}\./,'www.')
+        else
+          request.url.sub(/#{cms_domain_prefix}\./,'')
+        end
+      end
+    end
   end
 end
 
 Cms::ContentController.send(:include, Cms::S3::ContentController)
 Attachment.send(:include, Cms::S3::Attachment)
+Cms::ApplicationController.send(:include, Cms::S3::ApplicationController)
 # ensure S3 storage disabled by default
 Cms::S3.enabled = false if Cms::S3.enabled.nil?
 # ensure heroku caching disabled by default
 Cms::S3.heroku_caching = false if Cms::S3.heroku_caching.nil?
+# function to set domain prefix without url to 'www' is disabled by default
+Cms::S3.www_domain_prefix = false if Cms::S3.www_domain_prefix.nil?
+# load s3 options if s3.yml exists
 if File.exists?("#{RAILS_ROOT}/config/s3.yml")
   Cms::S3.options =  YAML.load_file("#{RAILS_ROOT}/config/s3.yml")
   Cms::S3.options.symbolize_keys!
