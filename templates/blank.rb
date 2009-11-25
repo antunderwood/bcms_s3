@@ -21,8 +21,8 @@ environment 'config.action_view.cache_template_loading = false', :env => "produc
 environment 'config.action_controller.page_cache_directory = RAILS_ROOT + "/public/cache/"', :env => "production"
 initializer 'browsercms.rb', <<-CODE
 Cms.attachment_file_permission = 0640
-Cms::S3::Module.enabled = false
-Cms::S3::Module.heroku_caching = false
+Cms::S3.enabled = false
+Cms::S3.heroku_caching = false
 CODE
 if Gem.win_platform?
   puts "        rake  db:migrate"

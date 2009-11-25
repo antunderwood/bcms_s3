@@ -12,8 +12,7 @@ Gem::Specification.new do |s|
   s.date = %q{2009-11-25}
   s.email = %q{email2ants@gmail.com}
   s.extra_rdoc_files = [
-    "LICENSE.txt",
-     "README.markdown"
+    "README.markdown"
   ]
   s.files = [
     "lib/bcms_s3.rb",
@@ -26,10 +25,6 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{This is a browsercms (browsercms.org) module to allow the facility to have attachments stored on Amazon S3. Also there is the option to change caching to suit heroku}
-  s.test_files = [
-    "test/performance/browsing_test.rb",
-     "test/test_helper.rb"
-  ]
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
