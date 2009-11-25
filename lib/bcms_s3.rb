@@ -1,13 +1,16 @@
 require 'bcms_s3/routes'
 module Cms
-  class << self
-	attr_accessor :file_storage_on_s3
-	attr_accessor :s3_options
-
-
-	# This is called after the environment is ready
-	def init
-	  Cms.file_storage_on_s3 if Cms.file_storage_on_s3.nil?
-	end
+  module S3
+    module Module
+      class << self
+        attr_accessor :enabled
+        attr_accessor :heroku_caching
+        attr_accessor :options
+      end
+    end
   end
 end
+# ensure S3 storage disabled by default
+Cms::S3::Module.enabled = false if Cms::S3::Module.enabled.nil?
+# ensure heroku caching disabled by default
+Cms::S3::Module.heroku_caching = false if Cms::S3::Module.heroku_caching.nil?

@@ -21,6 +21,7 @@ begin
     gem.files << "app/models/attachment.rb"
     gem.files << "lib/bcms_s3.rb"
     gem.files << "lib/bcms_s3/routes.rb"
+    gem.files << "templates/blank.rb"
 
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
