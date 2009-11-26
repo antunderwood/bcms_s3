@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.5}
-  s.summary = %q{This is a browsercms (browsercms.org) module to allow the facility to have attachments stored on Amazon S3. Also there is the option to change caching to suit heroku and/or use 'www' as the prefix for the non-cms site Based on original work by Neil Middleton}
+  s.summary = %q{This is a browsercms (browsercms.org) module to allow the facility to have attachments stored on Amazon S3. Also there is the option to change caching to suit heroku and/or use 'www' as the prefix for the non-cms site. Based on original work by Neil Middleton}
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
