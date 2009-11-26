@@ -17,3 +17,5 @@ If your non cms domain is www.myapp.com rather than app.com this can be enabled 
 1. The s3.yml should be excluded from public repositories (e.g github) since it contains your secret AWS key which should **never** be revealed to the public.
 2. Changing from local storage to S3 storage will require you to re-upload all your files (or copy the tree to s3)
 3. This module requires the RightAWS gem from RightScale (sudo gem install right_aws)
+
+##### Based on original work on S3 storage for BrowserCMS by [Neil Middleton](http://github.com/neilmiddleton/)

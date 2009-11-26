@@ -12,10 +12,10 @@ module Cms
         controller_class.alias_method_chain :render_page_with_caching, :s3
         controller_class.alias_method_chain :try_to_stream_file, :s3
       end
-        def render_page_with_caching_with_s3
-          render_page
-          response.headers['Cache-Control'] = 'public, max-age=300' if Cms::S3.heroku_caching
-        end
+      def render_page_with_caching_with_s3
+        render_page
+        response.headers['Cache-Control'] = 'public, max-age=300' if Cms::S3.heroku_caching
+      end
       def try_to_stream_file_with_s3
         split = @paths.last.to_s.split('.')
         ext  = split.size > 1 ? split.last.to_s.downcase : nil
@@ -54,16 +54,16 @@ module Cms
         model_class.alias_method_chain :write_temp_file_to_storage_location, :s3
       end
       def set_file_location_with_s3
-          unless temp_file.blank? 
-            prefix = temp_file.original_filename.sub(/\..+$/,'') 
-            if temp_file.original_filename =~ /.+(\..+)$/ 
-              suffix = $1 
-            else 
-              suffix = "" 
-            end 
-            new_filename = "#{prefix}-#{ActiveSupport::SecureRandom.hex(4)}#{suffix}" 
-            self.file_location = "#{Time.now.strftime("%Y/%m/%d")}/#{new_filename}" 
+        unless temp_file.blank? 
+          prefix = temp_file.original_filename.sub(/\..+$/,'') 
+          if temp_file.original_filename =~ /.+(\..+)$/ 
+            suffix = $1 
+          else 
+            suffix = "" 
           end 
+          new_filename = "#{prefix}-#{ActiveSupport::SecureRandom.hex(4)}#{suffix}" 
+          self.file_location = "#{Time.now.strftime("%Y/%m/%d")}/#{new_filename}" 
+        end 
       end
       def write_temp_file_to_storage_location_with_s3
         unless temp_file.blank?

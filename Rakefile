@@ -8,7 +8,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "bcms_s3"
-    gem.summary = %Q{This is a browsercms (browsercms.org) module to allow the facility to have attachments stored on Amazon S3. Also there is the option to change caching to suit heroku}
+    gem.summary = %Q{This is a browsercms (browsercms.org) module to allow the facility to have attachments stored on Amazon S3. Also there is the option to change caching to suit heroku and/or use 'www' as the prefix for the non-cms site}
+    gem.description = %Q{Based on original work by Neil Middleton}
     gem.email = "email2ants@gmail.com"
     gem.homepage = "http://github.com/aunderwo/bcms_s3"
     gem.authors = ["Anthony Underwood"]
