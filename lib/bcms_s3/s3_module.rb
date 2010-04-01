@@ -7,6 +7,32 @@ module Cms
       attr_accessor :www_domain_prefix
       attr_accessor :options
     end
+    module AttachmentsController
+      def self.included(controller_class)
+        controller_class.alias_method_chain :show, :s3
+      end
+      
+      def show_with_s3
+        @attachment = ::Attachment.find(params[:id])
+        @attachment = @attachment.as_of_version(params[:version]) if params[:version]
+        if Cms::S3.enabled
+          #get the file off S3
+          redirect_to("http://#{Cms::S3.options[:bucket]}.s3.amazonaws.com/#{@attachment.file_location}")
+        else
+          #Construct a path to where this file would be if it were cached
+          @file = @attachment.full_file_location
+
+          #Stream the file if it exists
+          if @path != "/" && File.exists?(@file)
+            send_file(@file, 
+            :filename    => @attachment.file_name,
+            :type        => @attachment.file_type,
+            :disposition => "inline"
+            )
+          end
+        end
+      end
+    end
     module ContentController
       def self.included(controller_class)
         controller_class.alias_method_chain :render_page_with_caching, :s3
@@ -103,6 +129,7 @@ module Cms
   end
 end
 
+Cms::AttachmentsController.send(:include, Cms::S3::AttachmentsController)
 Cms::ContentController.send(:include, Cms::S3::ContentController)
 Attachment.send(:include, Cms::S3::Attachment)
 Cms::ApplicationController.send(:include, Cms::S3::ApplicationController)
