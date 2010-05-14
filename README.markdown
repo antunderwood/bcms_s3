@@ -10,6 +10,24 @@ This should be in the following format
 ## Using this module with [Heroku](http://heroku.com)
 If using this module in conjunction with deployment on heroku you should probably turning heroku caching on by setting Cms::S3.heroku_caching in config/initializers/browsercms.rb to true.
 
+In order to avoid putting your secret AWS key in the s3.yml file, you can take advantage of [heroku's config vars](http://docs.heroku.com/config-vars). Use ERB to read the values from the environment.  This way you can safely commit your s3.yml file to the repository without revealing your amazon credentials.
+
+    access_key_id: <%= ENV['s3_access_key_id'] %>
+    secret_access_key: <%= ENV['s3_secret_access_key'] %>
+    bucket: <%= ENV['s3_bucket'] %>
+
+For developing on your local machine, export the s3 variables to your environment.
+
+    export s3_access_key_id='your AWS access key'
+    export s3_secret_access_key='your AWS secret access key'
+    export s3_bucket='your unique bucket name'
+
+Set the config vars on heroku to get it working there as well.
+
+    heroku config:add s3_access_key_id='your AWS access key'
+    heroku config:add s3_secret_access_key='your AWS secret access key'
+    heroku config:add s3_bucket='your unique bucket name'
+
 ## www prefix for non cms urls
 If your non cms domain is www.myapp.com rather than app.com this can be enabled by setting Cms::S3.www_domain_prefix in config/initializers/browsercms.rb to true.
 

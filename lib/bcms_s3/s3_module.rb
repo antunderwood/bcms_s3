@@ -141,6 +141,7 @@ Cms::S3.heroku_caching = false if Cms::S3.heroku_caching.nil?
 Cms::S3.www_domain_prefix = false if Cms::S3.www_domain_prefix.nil?
 # load s3 options if s3.yml exists
 if File.exists?("#{RAILS_ROOT}/config/s3.yml")
-  Cms::S3.options =  YAML.load_file("#{RAILS_ROOT}/config/s3.yml")
+  yaml_string = IO.read("#{RAILS_ROOT}/config/s3.yml")
+  Cms::S3.options =  YAML::load(ERB.new(yaml_string).result)
   Cms::S3.options.symbolize_keys!
 end
