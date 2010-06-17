@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bcms_s3}
-  s.version = "0.1.2"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Anthony Underwood"]
-  s.date = %q{2009-11-26}
+  s.date = %q{2010-06-17}
   s.email = %q{email2ants@gmail.com}
   s.extra_rdoc_files = [
     "README.markdown"
