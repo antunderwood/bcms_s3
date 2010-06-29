@@ -17,7 +17,11 @@ module Cms
         @attachment = @attachment.as_of_version(params[:version]) if params[:version]
         if Cms::S3.enabled
           #get the file off S3
-          redirect_to("http://#{Cms::S3.options[:bucket]}.s3.amazonaws.com/#{@attachment.file_location}")
+          if Cms::S3.options[:s3_cname]
+            redirect_to("http://#{Cms::S3.options[:s3_cname]}/#{@attachment.file_location}")
+          else
+            redirect_to("http://#{Cms::S3.options[:bucket]}.s3.amazonaws.com/#{@attachment.file_location}")
+          end
         else
           #Construct a path to where this file would be if it were cached
           @file = @attachment.full_file_location
@@ -56,7 +60,11 @@ module Cms
 
             if Cms::S3.enabled
               #get the file off S3
-              redirect_to("http://#{Cms::S3.options[:bucket]}.s3.amazonaws.com/#{@attachment.file_location}")
+              if Cms::S3.options[:s3_cname]
+                redirect_to("http://#{Cms::S3.options[:s3_cname]}/#{@attachment.file_location}")
+              else
+                redirect_to("http://#{Cms::S3.options[:bucket]}.s3.amazonaws.com/#{@attachment.file_location}")
+              end
             else
               #Construct a path to where this file would be if it were cached
               @file = @attachment.full_file_location

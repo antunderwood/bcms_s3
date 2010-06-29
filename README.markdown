@@ -31,6 +31,9 @@ Set the config vars on heroku to get it working there as well.
 ## www prefix for non cms urls
 If your non cms domain is www.myapp.com rather than app.com this can be enabled by setting Cms::S3.www_domain_prefix in config/initializers/browsercms.rb to true.
 
+## using cnames to your S3 bucket
+If you've set up CNAMES in your DNS to point to your bucket, then you can enable the use of that instead of the FQDN ending in amazonaws.com by setting Cms::S3.options[:s3_cname] in your s3.yml file.
+
 ## Important things to note
 1. The s3.yml should be excluded from public repositories (e.g github) since it contains your secret AWS key which should **never** be revealed to the public.   
 **Please note**. This no longer applies since the access keys and buckets are now specified in environmental variables and therefore the s3.yml file now contains just references to these environmental variables.
